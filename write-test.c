@@ -42,7 +42,8 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < num_iterations; i++) {
+    int i;
+    for (i = 0; i < num_iterations; i++) {
         if (flock(fd, LOCK_EX) == -1) {
             perror("Error locking file");
             exit(EXIT_FAILURE);
