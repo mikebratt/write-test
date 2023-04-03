@@ -30,20 +30,23 @@ int main(int argc, char *argv[]) {
 
     gettimeofday(&start_time, NULL);
 
-    fp = fopen(FILE_NAME, "a");
-    if (fp == NULL) {
-        perror("Error opening file");
-        exit(EXIT_FAILURE);
-    }
 
-    fd = fileno(fp);
-    if (fd == -1) {
-        perror("Error getting file descriptor");
-        exit(EXIT_FAILURE);
-    }
 
     int i;
     for (i = 0; i < num_iterations; i++) {
+        
+        fp = fopen(FILE_NAME, "a");
+        if (fp == NULL) {
+            perror("Error opening file");
+            exit(EXIT_FAILURE);
+        }
+
+        fd = fileno(fp);
+        if (fd == -1) {
+            perror("Error getting file descriptor");
+            exit(EXIT_FAILURE);
+        }
+        
         if (flock(fd, LOCK_EX) == -1) {
             perror("Error locking file");
             exit(EXIT_FAILURE);
@@ -63,11 +66,10 @@ int main(int argc, char *argv[]) {
             perror("Error unlocking file");
             exit(EXIT_FAILURE);
         }
-    }
-
-    if (fclose(fp) != 0) {
+        if (fclose(fp) != 0) {
         perror("Error closing file");
         exit(EXIT_FAILURE);
+        }
     }
 
     gettimeofday(&end_time, NULL);
